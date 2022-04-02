@@ -1,22 +1,37 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import {Column, CreatedAt, Default, Model, Table, UpdatedAt} from 'sequelize-typescript';
+import {IUserCreationAttrs} from "../intrefaces/user.interface";
+import {ApiProperty} from "@nestjs/swagger";
+import {DataTypes} from "sequelize";
 
 @Table
-export class User extends Model {
+export class User extends Model<User, IUserCreationAttrs>{
+  @ApiProperty({example: 1})
+  @Column({autoIncrement: true, primaryKey: true})
+  id: number
+
+  @ApiProperty({example: 'user'})
   @Column
   login: string;
 
-  @Column({ allowNull: true })
+  @ApiProperty({example: 'Иван'})
+  @Column
   firstName: string;
 
-  @Column({ allowNull: true})
+  @ApiProperty({example: 'Иванов'})
+  @Column
   lastName: string;
 
+  @ApiProperty({example: true})
   @Column({ defaultValue: true })
   isActive: boolean;
 
-  @Column({ defaultValue: new Date() })
-  createAt: Date;
+  @ApiProperty({example: '2022-04-02T11:13:08.011Z'})
+  @CreatedAt
+  @Column({ defaultValue: DataTypes.NOW })
+  createdAt: Date;
 
-  @Column({ defaultValue: new Date() })
-  updateAt: Date;
+  @ApiProperty({example: '2022-04-02T11:13:08.011Z'})
+  @UpdatedAt
+  @Column({ defaultValue: DataTypes.NOW })
+  updatedAt: Date;
 }

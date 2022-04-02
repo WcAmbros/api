@@ -32,16 +32,20 @@
 docker-compose up
 ```
 
-Чтобы удалить сервис
+Для запуска только сервиса `postgres`
+
+```shell
+docker-compose run postgres
+```
+
+Чтобы удалить сервисы
 
 ```shell
 docker-compose rm -sf
 ```
 
 
-## Документация по NestJs
-https://docs.nestjs.com
-
-## Документация по sequelize
-https://sequelize.org/v7/
-
+## Дополнительная информация
+- [Документация по NestJs](https://docs.nestjs.com)
+- [Документация по sequelize-typesript](https://github.com/RobinBuschmann/sequelize-typescript#column)
+- [Документация по типам данных sequelize](https://sequelize.org/v7/manual/model-basics.html#data-types)
