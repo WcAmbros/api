@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+  postgres:
+    image: postgres
+    env_file: .development.env
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+  backend:
+    build: .
+    env_file: .development.env
+    environment:
+      POSTGRES_HOST: postgres
+    volumes:
+      - .:/app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+volumes:
+  pgdata:
