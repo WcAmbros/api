@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto';
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "./entities/user.entity";
+import { PageDto, PageOptionsDto, PageMetaDto } from "@app/json-api";
 
 @Injectable()
 export class UsersService {
@@ -15,8 +15,15 @@ export class UsersService {
     return this.userModel.create(createUserDto);
   }
 
-  findAll(): Promise<User[]> {
-    return this.userModel.findAll();
+  async findAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<User>> {
+    const { count, rows } = await this.userModel.findAndCountAll({
+      limit: pageOptionsDto.limit,
+      offset: pageOptionsDto.offset,
+      order: [['id',pageOptionsDto.order]],
+    });
+
+    const pageMetaDto = new PageMetaDto({ itemCount: count, pageOptionsDto });
+    return new PageDto(rows, pageMetaDto);
   }
 
   findOne(id: number): Promise<User> {

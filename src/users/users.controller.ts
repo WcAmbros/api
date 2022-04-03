@@ -5,13 +5,14 @@ import {
   Body,
   Patch,
   Param,
-  Delete, Query,
+  Delete, Query, HttpStatus, HttpCode,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {User} from "./entities/user.entity";
+import { PageDto, PageOptionsDto } from "@app/json-api";
+
 
 @ApiTags('Users')
 @Controller('users')
@@ -27,9 +28,10 @@ export class UsersController {
 
   @ApiOperation({description: 'Поиск всех пользователей'})
   @ApiResponse({status: 200, type: [User]})
+  @HttpCode(HttpStatus.OK)
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query() pageOptionsDto: PageOptionsDto):Promise<PageDto<User>>  {
+    return this.usersService.findAll(pageOptionsDto);
   }
 
   @ApiOperation({description: 'Возвращает пользователя'})

@@ -46,6 +46,7 @@ docker-compose rm -sf
 
 
 ## Дополнительная информация
+- [Документация по jsonapi](https://jsonapi.org/)
 - [Документация по NestJs](https://docs.nestjs.com)
 - [Документация по sequelize-typesript](https://github.com/RobinBuschmann/sequelize-typescript#column)
 - [Документация по типам данных sequelize](https://sequelize.org/v7/manual/model-basics.html#data-types)

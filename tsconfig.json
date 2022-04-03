@@ -17,6 +17,26 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@app/jsonapi": [
+        "libs/jsonapi/src"
+      ],
+      "@app/jsonapi/*": [
+        "libs/jsonapi/src/*"
+      ],
+      "@app/json-api-test": [
+        "libs/json-api-test/src"
+      ],
+      "@app/json-api-test/*": [
+        "libs/json-api-test/src/*"
+      ],
+      "@app/json-api": [
+        "libs/json-api/src"
+      ],
+      "@app/json-api/*": [
+        "libs/json-api/src/*"
+      ]
+    }
   }
 }
