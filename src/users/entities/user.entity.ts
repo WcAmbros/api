@@ -2,35 +2,36 @@ import {Column, CreatedAt, Default, Model, Table, UpdatedAt} from 'sequelize-typ
 import {IUserCreationAttrs} from "../intrefaces/user.interface";
 import {ApiProperty} from "@nestjs/swagger";
 import {DataTypes} from "sequelize";
+import {UserExample} from "../../i18n/ru";
 
 @Table
 export class User extends Model<User, IUserCreationAttrs>{
-  @ApiProperty({example: 1})
+  @ApiProperty(UserExample.ID)
   @Column({autoIncrement: true, primaryKey: true})
   id: number
 
-  @ApiProperty({example: 'user'})
+  @ApiProperty(UserExample.LOGIN)
   @Column
   login: string;
 
-  @ApiProperty({example: 'Иван'})
+  @ApiProperty(UserExample.FIRST_NAME)
   @Column
   firstName: string;
 
-  @ApiProperty({example: 'Иванов'})
+  @ApiProperty(UserExample.LAST_NAME)
   @Column
   lastName: string;
 
-  @ApiProperty({example: true})
+  @ApiProperty(UserExample.IS_ACTIVE)
   @Column({ defaultValue: true })
   isActive: boolean;
 
-  @ApiProperty({example: '2022-04-02T11:13:08.011Z'})
+  @ApiProperty(UserExample.CREATED_AT)
   @CreatedAt
   @Column({ defaultValue: DataTypes.NOW })
   createdAt: Date;
 
-  @ApiProperty({example: '2022-04-02T11:13:08.011Z'})
+  @ApiProperty(UserExample.UPDATED_AT)
   @UpdatedAt
   @Column({ defaultValue: DataTypes.NOW })
   updatedAt: Date;
