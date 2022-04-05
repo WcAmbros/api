@@ -7,6 +7,7 @@ export const ApiOkResponse = <TModel extends Type<any>>(
 ) => {
     return applyDecorators(
         NestJS.ApiExtraModels(model),
+        NestJS.ApiExtraModels(ResponseInvalidDto),
         NestJS.ApiExtraModels(ResponseOkDto),
         NestJS.ApiOkResponse({
             schema: {
@@ -18,8 +19,8 @@ export const ApiOkResponse = <TModel extends Type<any>>(
                 },
             }
         }),
-        NestJS.ApiBadRequestResponse({description: 'Bad Request', type: ResponseInvalidDto}),
-        NestJS.ApiNotFoundResponse({description: 'Not Found', type: ResponseInvalidDto}),
-        NestJS.ApiInternalServerErrorResponse({description: 'Internal Server Error', type: ResponseInvalidDto}),
+        NestJS.ApiBadRequestResponse({description: 'Bad Request'}),
+        NestJS.ApiNotFoundResponse({description: 'Not Found'}),
+        NestJS.ApiInternalServerErrorResponse({description: 'Internal Server Error'}),
     );
 };

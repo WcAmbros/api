@@ -20,20 +20,20 @@ import {UsersControllerDescription} from "../i18n/ru";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiOperation(UsersControllerDescription.CREATE)
-  @JsonApi.ApiOkResponse(User)
-  @ApiBadRequestResponse()
-  @Post()
-  create(@Body() createUserDto: CreateUserDto):Promise<JsonApi.ResponseOkDto<User>> {
-    return this.usersService.create(createUserDto);
-  }
-
   @ApiOperation(UsersControllerDescription.FIND_ALL)
   @UsePipes(new ValidationPipe({ transform: true }))
   @JsonApi.ApiOkListResponse(User)
   @Get()
   findAll(@Query() pageOptionsDto: JsonApi.PaginationOptionsDto):Promise<JsonApi.ResponseOkListDto<User>>  {
     return this.usersService.findAll(pageOptionsDto);
+  }
+
+  @ApiOperation(UsersControllerDescription.CREATE)
+  @JsonApi.ApiOkResponse(User)
+  @ApiBadRequestResponse()
+  @Post()
+  create(@Body() createUserDto: CreateUserDto):Promise<JsonApi.ResponseOkDto<User>> {
+    return this.usersService.create(createUserDto);
   }
 
   @ApiOperation(UsersControllerDescription.FIND_ONE)
