@@ -3,6 +3,7 @@ import { CreateUserDto, UpdateUserDto } from './dto';
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "./entities/user.entity";
 import {ResponseOkDto, ResponseOkListDto, PaginationOptionsDto, PaginationMetaDto} from "@app/json-api";
+import {UserEntity} from "../i18n/ru/user.entity";
 
 @Injectable()
 export class UsersService {
@@ -31,17 +32,16 @@ export class UsersService {
   async findOne(id: number): Promise<ResponseOkDto<User>> {
     const model = await this.userModel.findOne({where: {id}});
     if(!model){
-      try {
-        throw new NotFoundException('Пользователь не найден')
-      }catch (e) {
-        console.log(e);
-      }
+      throw new NotFoundException(UserEntity.NOT_FOUND)
     }
     return new ResponseOkDto(model);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<ResponseOkDto<User>> {
     const [,[model]] = await this.userModel.update( updateUserDto,{where: { id }, returning: true})
+    if(!model){
+      throw new NotFoundException(UserEntity.NOT_FOUND)
+    }
     return  new ResponseOkDto(model);
   }
 
