@@ -46,7 +46,7 @@ docker-compose rm -sf
 
 
 ## Дополнительная информация
-- [wiki проекта](/pet/api/-/wikis/Introducion)
+- [wiki проекта](https://github.com/WcAmbros/api/wiki)
 - [Документация по jsonapi](https://jsonapi.org/)
 - [Документация по NestJs](https://docs.nestjs.com)
 - [Документация по sequelize-typesript](https://github.com/RobinBuschmann/sequelize-typescript#column)
