@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsArray } from "class-validator";
 import { PaginationMetaDto } from "./pagination-meta.dto";
 
-export class ApiOkListDto<T> {
+export class ResponseOkListDto<T> {
 
     @IsArray()
     @ApiProperty()

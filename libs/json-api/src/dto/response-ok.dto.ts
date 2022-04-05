@@ -1,6 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
 
-export class ApiOkDto<T> {
+export class ResponseOkDto<T> {
     @ApiProperty()
     readonly data: T;
     constructor(data: T) {

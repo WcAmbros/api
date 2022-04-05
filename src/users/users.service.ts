@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "./entities/user.entity";
-import {ApiOkDto, ApiOkListDto, PaginationOptionsDto, PaginationMetaDto} from "@app/json-api";
-import * as JsonApi from "@app/json-api";
+import {ResponseOkDto, ResponseOkListDto, PaginationOptionsDto, PaginationMetaDto} from "@app/json-api";
 
 @Injectable()
 export class UsersService {
@@ -12,12 +11,12 @@ export class UsersService {
       private userModel: typeof User,
   ) {}
 
-  async create(createUserDto: CreateUserDto):Promise<JsonApi.ApiOkDto<User>> {
+  async create(createUserDto: CreateUserDto):Promise<ResponseOkDto<User>> {
     const model = await this.userModel.create(createUserDto);
-    return new ApiOkDto(model);
+    return new ResponseOkDto(model);
   }
 
-  async findAll(options: PaginationOptionsDto): Promise<ApiOkListDto<User>> {
+  async findAll(options: PaginationOptionsDto): Promise<ResponseOkListDto<User>> {
     const {limit, offset, order} = options
     const { count, rows } = await this.userModel.findAndCountAll({
       limit,
@@ -26,17 +25,17 @@ export class UsersService {
     });
 
     const pageMetaDto = new PaginationMetaDto({ itemCount: count, options});
-    return new ApiOkListDto(rows, pageMetaDto);
+    return new ResponseOkListDto(rows, pageMetaDto);
   }
 
-  async findOne(id: number): Promise<ApiOkDto<User>> {
+  async findOne(id: number): Promise<ResponseOkDto<User>> {
     const model = await this.userModel.findOne({where: {id}});
-    return new ApiOkDto(model);
+    return new ResponseOkDto(model);
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<ApiOkDto<User>> {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<ResponseOkDto<User>> {
     const [,[model]] = await this.userModel.update( updateUserDto,{where: { id }, returning: true})
-    return  new ApiOkDto(model);
+    return  new ResponseOkDto(model);
   }
 
   remove(id: number): Promise<any> {

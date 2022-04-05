@@ -24,7 +24,7 @@ export class UsersController {
   @JsonApi.ApiOkResponse(User)
   @ApiBadRequestResponse()
   @Post()
-  create(@Body() createUserDto: CreateUserDto):Promise<JsonApi.ApiOkDto<User>> {
+  create(@Body() createUserDto: CreateUserDto):Promise<JsonApi.ResponseOkDto<User>> {
     return this.usersService.create(createUserDto);
   }
 
@@ -33,21 +33,21 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   @JsonApi.ApiOkListResponse(User)
   @Get()
-  findAll(@Query() pageOptionsDto: JsonApi.PaginationOptionsDto):Promise<JsonApi.ApiOkListDto<User>>  {
+  findAll(@Query() pageOptionsDto: JsonApi.PaginationOptionsDto):Promise<JsonApi.ResponseOkListDto<User>>  {
     return this.usersService.findAll(pageOptionsDto);
   }
 
   @ApiOperation(UsersControllerDescription.FIND_ONE)
   @JsonApi.ApiOkResponse(User)
   @Get(':id')
-  findOne(@Param('id') id: number):Promise<JsonApi.ApiOkDto<User>> {
+  findOne(@Param('id') id: number):Promise<JsonApi.ResponseOkDto<User>> {
     return this.usersService.findOne(+id);
   }
 
   @ApiOperation(UsersControllerDescription.UPDATE)
   @JsonApi.ApiOkResponse(User)
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<JsonApi.ApiOkDto<User>> {
+  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<JsonApi.ResponseOkDto<User>> {
     return this.usersService.update(+id, updateUserDto);
   }
 

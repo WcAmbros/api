@@ -1,13 +1,13 @@
 import { applyDecorators, Type } from "@nestjs/common";
 import * as NestJS from "@nestjs/swagger";
-import { ApiOkDto } from "../dto";
+import { ResponseOkDto } from "../dto";
 
 export const ApiOkResponse = <TModel extends Type<any>>(
     model: TModel
 ) => {
     return applyDecorators(
         NestJS.ApiExtraModels(model),
-        NestJS.ApiExtraModels(ApiOkDto),
+        NestJS.ApiExtraModels(ResponseOkDto),
         NestJS.ApiOkResponse({
             schema: {
                 type: 'object',
