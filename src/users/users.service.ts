@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "./entities/user.entity";
@@ -30,6 +30,13 @@ export class UsersService {
 
   async findOne(id: number): Promise<ResponseOkDto<User>> {
     const model = await this.userModel.findOne({where: {id}});
+    if(!model){
+      try {
+        throw new NotFoundException('Пользователь не найден')
+      }catch (e) {
+        console.log(e);
+      }
+    }
     return new ResponseOkDto(model);
   }
 

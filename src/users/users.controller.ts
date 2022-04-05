@@ -30,7 +30,6 @@ export class UsersController {
 
   @ApiOperation(UsersControllerDescription.FIND_ALL)
   @UsePipes(new ValidationPipe({ transform: true }))
-  @HttpCode(HttpStatus.OK)
   @JsonApi.ApiOkListResponse(User)
   @Get()
   findAll(@Query() pageOptionsDto: JsonApi.PaginationOptionsDto):Promise<JsonApi.ResponseOkListDto<User>>  {

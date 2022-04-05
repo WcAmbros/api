@@ -1,6 +1,6 @@
-import { applyDecorators, Type } from "@nestjs/common";
+import {applyDecorators, Type} from "@nestjs/common";
 import * as NestJS from "@nestjs/swagger";
-import { ResponseOkDto } from "../dto";
+import {ResponseInvalidDto, ResponseOkDto} from "../dto";
 
 export const ApiOkResponse = <TModel extends Type<any>>(
     model: TModel
@@ -18,5 +18,8 @@ export const ApiOkResponse = <TModel extends Type<any>>(
                 },
             }
         }),
+        NestJS.ApiBadRequestResponse({description: 'Bad Request', type: ResponseInvalidDto}),
+        NestJS.ApiNotFoundResponse({description: 'Not Found', type: ResponseInvalidDto}),
+        NestJS.ApiInternalServerErrorResponse({description: 'Internal Server Error', type: ResponseInvalidDto}),
     );
 };
