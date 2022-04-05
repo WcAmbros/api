@@ -15,6 +15,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/api-docs', app, document);
+  app.use('/swagger.json', (req, res) => {
+    res.send(document);
+  });
 
   await app.use(helmet());
   app.useGlobalPipes(

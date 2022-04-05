@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {ApiOperation, ApiResponse, ApiTags, ApiBadRequestResponse} from '@nestjs/swagger';
 import {User} from "./entities/user.entity";
-import { PageDto, PageOptionsDto } from "@app/json-api";
+import * as JsonApi from "@app/json-api";
 import {UsersControllerDescription} from "../i18n/ru";
 
 
@@ -22,30 +22,33 @@ export class UsersController {
 
   @ApiOperation(UsersControllerDescription.CREATE)
   @ApiResponse({status: 200, type: User})
+  @ApiBadRequestResponse()
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto):Promise<JsonApi.ApiOkDto<User>> {
     return this.usersService.create(createUserDto);
   }
 
   @ApiOperation(UsersControllerDescription.FIND_ALL)
-  @ApiResponse({status: 200, type: [User]})
   @UsePipes(new ValidationPipe({ transform: true }))
+  @HttpCode(HttpStatus.OK)
+  @JsonApi.ApiOkListResponse(User)
   @Get()
-  findAll(@Query() pageOptionsDto: PageOptionsDto):Promise<PageDto<User>>  {
+  findAll(@Query() pageOptionsDto: JsonApi.PaginationOptionsDto):Promise<JsonApi.ApiOkListDto<User>>  {
     return this.usersService.findAll(pageOptionsDto);
   }
 
   @ApiOperation(UsersControllerDescription.FIND_ONE)
-  @ApiResponse({status: 200, type: User})
+  // @ApiResponse({status: 200, type: User})
+  @JsonApi.ApiOkResponse(User)
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: number):Promise<JsonApi.ApiOkDto<User>> {
     return this.usersService.findOne(+id);
   }
 
   @ApiOperation(UsersControllerDescription.UPDATE)
   @ApiResponse({status: 200, type: User})
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<JsonApi.ApiOkDto<User>> {
     return this.usersService.update(+id, updateUserDto);
   }
 
