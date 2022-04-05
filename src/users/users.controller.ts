@@ -21,7 +21,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @ApiOperation(UsersControllerDescription.CREATE)
-  @ApiResponse({status: 200, type: User})
+  @JsonApi.ApiOkResponse(User)
   @ApiBadRequestResponse()
   @Post()
   create(@Body() createUserDto: CreateUserDto):Promise<JsonApi.ApiOkDto<User>> {
@@ -38,7 +38,6 @@ export class UsersController {
   }
 
   @ApiOperation(UsersControllerDescription.FIND_ONE)
-  // @ApiResponse({status: 200, type: User})
   @JsonApi.ApiOkResponse(User)
   @Get(':id')
   findOne(@Param('id') id: number):Promise<JsonApi.ApiOkDto<User>> {
@@ -46,14 +45,14 @@ export class UsersController {
   }
 
   @ApiOperation(UsersControllerDescription.UPDATE)
-  @ApiResponse({status: 200, type: User})
+  @JsonApi.ApiOkResponse(User)
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto):Promise<JsonApi.ApiOkDto<User>> {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @ApiOperation(UsersControllerDescription.DELETE)
-  @ApiResponse({status: 200, type: User})
+  @ApiResponse({status: 200})
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.usersService.remove(+id);

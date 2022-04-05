@@ -6,6 +6,7 @@ export const ApiOkResponse = <TModel extends Type<any>>(
     model: TModel
 ) => {
     return applyDecorators(
+        NestJS.ApiExtraModels(model),
         NestJS.ApiExtraModels(ApiOkDto),
         NestJS.ApiOkResponse({
             schema: {
@@ -15,8 +16,7 @@ export const ApiOkResponse = <TModel extends Type<any>>(
                         $ref: NestJS.getSchemaPath(model)
                     }
                 },
-            },
-
-        })
+            }
+        }),
     );
 };
