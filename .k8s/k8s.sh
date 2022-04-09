@@ -50,6 +50,10 @@ then
   Warning "set gitlab project namespace: $CI_PROJECT_NAMESPACE"
   export PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE
 fi
+echo "ls .."
+ls ..
+echo "ls"
+ls
 
 source ../.env
 #export CONTAINER_VERSION=gitlab-$CI_COMMIT_SHORT_SHA
