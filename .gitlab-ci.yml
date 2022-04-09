@@ -13,8 +13,8 @@ build:
   services:
     - docker:19.03.1-dind
   script:
-    - docker build . -t $CONTAINER_REGISTRY/pet/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
-    - docker push $CONTAINER_REGISTRY/pet/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
+    - docker build . -t $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
+    - docker push $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
   only:
     refs:
       - master
@@ -32,7 +32,7 @@ deploy:
     - kubectl config set-credentials admin --token="$KUBE_TOKEN"
     - kubectl config set-context default --cluster=.k8s --user=admin
     - kubectl config use-context default
-    - .k8s/k8s.sh
+    - sh ./.k8s/k8s.sh
   only:
     refs:
       - master
@@ -51,7 +51,7 @@ production:
     - kubectl config set-credentials admin --token="$KUBE_TOKEN"
     - kubectl config set-context default --cluster=.k8s --user=admin
     - kubectl config use-context default
-    - .k8s/k8s.sh -n $CI_PROJECT_NAMESPACE-production
+    - sh .k8s/k8s.sh -n $CI_PROJECT_NAMESPACE-production
   only:
     refs:
       - master
