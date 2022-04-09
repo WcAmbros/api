@@ -4,11 +4,8 @@ stages:
   - production
 variables:
   IMAGE_PATH: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
-deploy-on-server:
-  stage: deploy
-  when: manual
-  script:
-    - apt update && apt install -y gettext-base
+before_script:
+  - apt update && apt install -y gettext-base
 build:
   stage: build
   variables:
