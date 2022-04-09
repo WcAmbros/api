@@ -8,7 +8,7 @@ deploy-on-server:
   stage: build
   when: manual
   script:
-    - apt install gettext-base
+    - apt update && apt install gettext-base
 build:
   stage: build
   variables:
