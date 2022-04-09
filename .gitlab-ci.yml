@@ -7,7 +7,7 @@ variables:
 deploy-on-server:
   stage: deploy
   when: manual
-  before_script:
+  script:
     - apk update && apk add gettext
 build:
   stage: build
@@ -24,10 +24,11 @@ build:
   only:
     refs:
       - master
-
 deploy:
   image: gcr.io/cloud-builders/kubectl:latest
   stage: deploy
+  needs:
+    - build
   environment:
     name: deploy
     url: https://pet.dev.findinamika.com/$CI_PROJECT_NAME/api-docs/
@@ -42,11 +43,12 @@ deploy:
   only:
     refs:
       - master
-
 production:
   when: manual
   image: gcr.io/cloud-builders/kubectl:latest
   stage: production
+  needs:
+    - build
   environment:
     name: production
     url: https://pet.findinamika.com/$CI_PROJECT_NAME/api-docs/
