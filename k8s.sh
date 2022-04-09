@@ -71,13 +71,13 @@ echo ""
 if ! kubectl get configMap -n $PROJECT_NAMESPACE | grep -q "^$PROJECT_NAME"; then
 
   Warning "project configMap not exist"
-  Warning "init default configMap from templates/config.yaml"
+  Warning "init default configMap from .k8s/templates/config.yaml"
 
-  envsubst < templates/config.yaml > config.yaml
+  envsubst < .k8s/templates/config.yaml > config.yaml
 
   kubectl apply -f config.yaml
 fi
 
 #https://skofgar.ch/dev/2020/08/how-to-quickly-replace-environment-variables-in-a-file/
-envsubst < templates/k8s.yaml > k8s.yaml
+envsubst < .k8s/templates/k8s.yaml > k8s.yaml
 kubectl apply -f k8s.yaml

@@ -33,7 +33,7 @@ deploy:
     - kubectl config set-credentials admin --token="$KUBE_TOKEN"
     - kubectl config set-context default --cluster=.k8s --user=admin
     - kubectl config use-context default
-    - .k8s/k8s.sh
+    - k8s.sh
   only:
     refs:
       - master
@@ -52,7 +52,7 @@ production:
     - kubectl config set-credentials admin --token="$KUBE_TOKEN"
     - kubectl config set-context default --cluster=.k8s --user=admin
     - kubectl config use-context default
-    - .k8s/k8s.sh -n $CI_PROJECT_NAMESPACE-production
+    - k8s.sh -n $CI_PROJECT_NAMESPACE-production
   only:
     refs:
       - master
