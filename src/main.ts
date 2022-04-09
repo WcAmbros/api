@@ -26,6 +26,7 @@ async function bootstrap() {
       }),
   );
   await app.listen(process.env.PORT);
+  console.log(`Mode ${process.env.NODE_ENV}`);
   console.log(`Application is running on ${process.env.PORT} port`);
   console.log(`OpenAPI docs is available at: http://localhost:${process.env.PORT}/api/api-docs`);
   console.log(`Swagger.json is available at: http://localhost:${process.env.PORT}/swagger.json`);

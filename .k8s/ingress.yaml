@@ -1,0 +1,28 @@
+---
+###################################################
+# Ingress
+###################################################
+kind: Ingress
+apiVersion: networking..k8s.io/v1
+metadata:
+  name: api
+  namespace: pet
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - pet.dev.findinamika.com
+      secretName: pet-api-dev-tls
+  rules:
+    - host: pet.dev.findinamika.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  number: 80

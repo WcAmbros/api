@@ -1,0 +1,57 @@
+stages:
+  - build
+  - deploy
+  - production
+
+build:
+  stage: build
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://localhost:2375/
+  image: cr.yandex/yc/metadata-token-docker-helper:0.2
+  services:
+    - docker:19.03.1-dind
+  script:
+    - docker build . -t $CONTAINER_REGISTRY/pet/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
+    - docker push $CONTAINER_REGISTRY/pet/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
+  only:
+    refs:
+      - master
+
+deploy:
+  image: gcr.io/cloud-builders/kubectl:latest
+  stage: deploy
+  environment:
+    name: deploy
+    url: https://pet.dev.findinamika.com/$CI_PROJECT_NAME/api-docs/
+    kubernetes:
+      namespace: $CI_PROJECT_NAMESPACE
+  script:
+    - kubectl config set-cluster .k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=.k8s --user=admin
+    - kubectl config use-context default
+    - .k8s/k8s.sh
+  only:
+    refs:
+      - master
+
+production:
+  when: manual
+  image: gcr.io/cloud-builders/kubectl:latest
+  stage: production
+  environment:
+    name: production
+    url: https://pet.findinamika.com/$CI_PROJECT_NAME/api-docs/
+    kubernetes:
+      namespace: $CI_PROJECT_NAMESPACE-production
+  script:
+    - kubectl config set-cluster .k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=.k8s --user=admin
+    - kubectl config use-context default
+    - .k8s/k8s.sh -n $CI_PROJECT_NAMESPACE-production
+  only:
+    refs:
+      - master

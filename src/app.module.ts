@@ -11,7 +11,7 @@ import {User} from "./users/entities/user.entity";
   imports: [
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV !== 'development',
-      envFilePath: ['.development.env'],
+      envFilePath: ['.env'],
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
