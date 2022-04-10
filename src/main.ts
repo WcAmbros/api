@@ -25,7 +25,7 @@ async function bootstrap() {
         transform: true,
       }),
   );
-  console.log(process.env)
+
   await app.listen(process.env.PORT);
   console.log(`Mode ${process.env.NODE_ENV}`);
   console.log(`Application is running on ${process.env.PORT} port`);
