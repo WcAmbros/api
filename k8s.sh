@@ -64,6 +64,9 @@ export PROJECT_CONFIG_MAP="$PROJECT_NAME-config"
 ## apply kubectl ##
 ############################################################
 
+
+Warning $(jq -V)
+Warning "version ${PROJECT_VERSION}"
 echo "check namespace: ${PROJECT_NAMESPACE}"
 echo ""
 
@@ -80,4 +83,4 @@ fi
 
 #https://skofgar.ch/dev/2020/08/how-to-quickly-replace-environment-variables-in-a-file/
 envsubst < .k8s/templates/k8s.yaml > k8s.yaml
-kubectl apply -f k8s.yaml
+#kubectl apply -f k8s.yaml
