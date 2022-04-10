@@ -14,7 +14,7 @@ Help()
 {
    # Display Help
    echo
-   echo "Syntax: k8s.sh [-s|-h]"
+   echo "Syntax: k8s.sh [-n|-h]"
    echo "options:"
    echo "-n     Set namespace, Example: k8s.sh -n api-stage"
    echo "-h     Print this Help."
@@ -29,7 +29,7 @@ Help()
 # Get the options
 export PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE
 
-while getopts ":hs:" option; do
+while getopts ":hn:" option; do
    case $option in
       h) # display Help
          Help
