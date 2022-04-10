@@ -21,6 +21,10 @@ spec:
   ports:
     - port: 80
       targetPort: $PROJECT_PORT
+      name: $PROJECT_NAME
+    - port: 5432
+      targetPort: 5432
+      name: postgres
   selector:
     app: $PROJECT_NAME
 ---
