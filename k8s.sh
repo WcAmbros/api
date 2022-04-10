@@ -72,9 +72,13 @@ if ! kubectl get configMap -n $PROJECT_NAMESPACE | grep -q "^$PROJECT_NAME"; the
 
   envsubst < .k8s/templates/config.yaml > config.yaml
 
-  kubectl apply -f config.yaml
+  #kubectl apply -f config.yaml
+  echo '####################### config.yaml ################################'
+  cat config.yaml
 fi
 
 #https://skofgar.ch/dev/2020/08/how-to-quickly-replace-environment-variables-in-a-file/
 envsubst < .k8s/templates/k8s.yaml > k8s.yaml
-kubectl apply -f k8s.yaml
+#kubectl apply -f k8s.yaml
+echo '########################## k8s.yaml ##################################'
+cat k8s.yaml

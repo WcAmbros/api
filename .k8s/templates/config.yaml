@@ -12,6 +12,7 @@ data:
   JWT_ACCESS_SECRET: jwt-secret-key
   JWT_REFRESH_SECRET: jwt-refresh-secret-key
   PORT: "4000"
+  PGDATA: /var/lib/postgresql/data/pgdata
   POSTGRES_DB: api
   POSTGRES_HOST: localhost
   POSTGRES_PASSWORD: password
