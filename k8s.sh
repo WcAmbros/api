@@ -64,9 +64,6 @@ export PROJECT_CONFIG_MAP="$PROJECT_NAME-config"
 ## apply kubectl ##
 ############################################################
 
-
-Warning $(jq -V)
-Warning "version ${PROJECT_VERSION}"
 echo "check namespace: ${PROJECT_NAMESPACE}"
 echo ""
 
