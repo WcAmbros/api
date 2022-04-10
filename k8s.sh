@@ -6,7 +6,7 @@ Warning() {
     YELLOW="\e[33m"
     ENDCOLOR="\e[0m"
 
-    echo "${YELLOW}Warning:${ENDCOLOR} $1"
+    echo -e "${YELLOW}Warning:${ENDCOLOR} $1"
 }
 # Help                                                     #
 ############################################################
@@ -33,7 +33,6 @@ while getopts "n:h" option; do
    case $option in
       n) # set project namespace
          PROJECT_NAMESPACE=$OPTARG
-         Warning $OPTARG
          ;;
       h) # display Help
          Help
