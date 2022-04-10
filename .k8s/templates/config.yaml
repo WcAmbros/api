@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: $PROJECT_NAMESPACE
 ---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: $PROJECT_CONFIG_MAP
