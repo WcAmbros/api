@@ -29,10 +29,11 @@ Help()
 # Get the options
 export PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE
 
-while getopts ":nh:" option; do
+while getopts "n:h" option; do
    case $option in
       n) # set project namespace
          PROJECT_NAMESPACE=$OPTARG
+         Warning $OPTARG
          ;;
       h) # display Help
          Help
@@ -45,11 +46,6 @@ done
 ############################################################
 ## set environments ##
 ############################################################
-if test -z PROJECT_NAMESPACE
-then
-  Warning "set gitlab project namespace: $CI_PROJECT_NAMESPACE"
-  export PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE
-fi
 
 source .env
 export PROJECT_PORT=$PORT
@@ -57,6 +53,7 @@ export PROJECT_VERSION=$(cat package.json | jq '.version')
 export PROJECT_NAME=$CI_PROJECT_NAME
 export PROJECT_CONFIG_MAP="$PROJECT_NAME-config"
 
+Warning $PROJECT_NAMESPACE
 ############################################################
 ## apply kubectl ##
 ############################################################
@@ -72,13 +69,13 @@ if ! kubectl get configMap -n $PROJECT_NAMESPACE | grep -q "^$PROJECT_NAME"; the
 
   envsubst < .k8s/templates/config.yaml > config.yaml
 
-  kubectl apply -f config.yaml
+  #kubectl apply -f config.yaml
   echo '####################### config.yaml ################################'
   cat config.yaml
 fi
 
 #https://skofgar.ch/dev/2020/08/how-to-quickly-replace-environment-variables-in-a-file/
 envsubst < .k8s/templates/k8s.yaml > k8s.yaml
-kubectl apply -f k8s.yaml
+#kubectl apply -f k8s.yaml
 echo '########################## k8s.yaml ##################################'
-cat k8s.yaml
+#cat k8s.yaml
