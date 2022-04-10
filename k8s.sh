@@ -29,14 +29,14 @@ Help()
 # Get the options
 export PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE
 
-while getopts ":hn:" option; do
+while getopts ":nh:" option; do
    case $option in
+      n) # set project namespace
+         PROJECT_NAMESPACE=$OPTARG
+         ;;
       h) # display Help
          Help
          exit;;
-      n) # Enter a name
-         PROJECT_NAMESPACE=$OPTARG
-         ;;
      \?) # Invalid option
          echo "Error: Invalid option"
          exit;;
