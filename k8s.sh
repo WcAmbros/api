@@ -52,13 +52,10 @@ then
 fi
 
 source .env
-#export CONTAINER_VERSION=gitlab-$CI_COMMIT_SHORT_SHA
 export PROJECT_PORT=$PORT
 export PROJECT_VERSION=$(cat package.json | jq '.version')
 export PROJECT_NAME=$CI_PROJECT_NAME
 export PROJECT_CONFIG_MAP="$PROJECT_NAME-config"
-
-#export IMAGE_PATH=$CONTAINER_REGISTRY/$PROJECT_NAMESPACE/$PROJECT_NAME:$CONTAINER_VERSION
 
 ############################################################
 ## apply kubectl ##
@@ -80,4 +77,4 @@ fi
 
 #https://skofgar.ch/dev/2020/08/how-to-quickly-replace-environment-variables-in-a-file/
 envsubst < .k8s/templates/k8s.yaml > k8s.yaml
-#kubectl apply -f k8s.yaml
+kubectl apply -f k8s.yaml
