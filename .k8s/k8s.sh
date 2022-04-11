@@ -50,8 +50,8 @@ DIR=$(dirname $0)
 source $DIR/../.env
 export PROJECT_PORT=$PORT
 export PROJECT_VERSION=$(cat $DIR/../package.json | jq '.version')
-export PROJECT_NAME=$CI_PROJECT_NAME
-export PROJECT_CONFIG_MAP="$PROJECT_NAME-config"
+export PROJECT_NAME=$CI_ENVIRONMENT_SLUG-$CI_PROJECT_NAME
+export PROJECT_CONFIG_MAP="$PROJECT_NAME"
 
 ############################################################
 ## apply kubectl ##
