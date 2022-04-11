@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-# Warning                                                     #
+# Warning                                                  #
 ############################################################
 Warning() {
     YELLOW="\e[33m"
@@ -69,12 +69,8 @@ if ! kubectl get configMap -n $PROJECT_NAMESPACE | grep -q "^$PROJECT_NAME"; the
   envsubst < $DIR/templates/config.yaml > $DIR/config.yaml
 
   kubectl apply -f $DIR/config.yaml
-  #echo '####################### config.yaml ################################'
-  #cat $DIR/config.yaml
 fi
 
 #https://skofgar.ch/dev/2020/08/how-to-quickly-replace-environment-variables-in-a-file/
 envsubst < $DIR/templates/k8s.yaml > $DIR/k8s.yaml
 kubectl apply -f $DIR/k8s.yaml
-#echo '########################## k8s.yaml ##################################'
-#cat $DIR/k8s.yaml
