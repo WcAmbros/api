@@ -1,16 +1,16 @@
 FROM node:16-alpine
+ENV PORT 4000
 
 WORKDIR /app
-COPY . /app
 
 RUN apk --no-cache add curl
+COPY package*.json /app/
 RUN npm install
+
+COPY . /app
 RUN npm run build
 
-# Проверка папки dist
-RUN realpath dist
-
-ENV PORT 4000
+VOLUME /uploads
 EXPOSE $PORT
 
 CMD [ "npm", "run", "start:prod"]

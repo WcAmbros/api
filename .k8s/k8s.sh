@@ -45,10 +45,11 @@ done
 ############################################################
 ## set environments ##
 ############################################################
+DIR=$(dirname $0)
 
-source .env
+source $DIR/../.env
 export PROJECT_PORT=$PORT
-export PROJECT_VERSION=$(cat package.json | jq '.version')
+export PROJECT_VERSION=$(cat $DIR/../package.json | jq '.version')
 export PROJECT_NAME=$CI_PROJECT_NAME
 export PROJECT_CONFIG_MAP="$PROJECT_NAME-config"
 
@@ -65,15 +66,15 @@ if ! kubectl get configMap -n $PROJECT_NAMESPACE | grep -q "^$PROJECT_NAME"; the
   Warning "project configMap not exist"
   Warning "init default configMap from .k8s/templates/config.yaml"
 
-  envsubst < .k8s/templates/config.yaml > config.yaml
+  envsubst < $DIR/templates/config.yaml > $DIR/config.yaml
 
-  kubectl apply -f config.yaml
+  kubectl apply -f $DIR/config.yaml
   #echo '####################### config.yaml ################################'
-  #cat config.yaml
+  #cat $DIR/config.yaml
 fi
 
 #https://skofgar.ch/dev/2020/08/how-to-quickly-replace-environment-variables-in-a-file/
-envsubst < .k8s/templates/k8s.yaml > k8s.yaml
-kubectl apply -f k8s.yaml
+envsubst < $DIR/templates/k8s.yaml > $DIR/k8s.yaml
+kubectl apply -f $DIR/k8s.yaml
 #echo '########################## k8s.yaml ##################################'
-#cat k8s.yaml
+#cat $DIR/k8s.yaml
