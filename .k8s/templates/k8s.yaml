@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: $PROJECT_NAME
-          image: $CONTAINER_IMAGE
+          image: $CONTAINER_IMAGE_VERSION
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
