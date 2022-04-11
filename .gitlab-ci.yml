@@ -37,6 +37,11 @@ deploy:
     - kubectl config set-context default --cluster=.k8s --user=admin
     - kubectl config use-context default
     - .k8s/k8s.sh
+  artifacts:
+    when: on_failure
+    name: "$CI_JOB_NAME"
+    paths:
+      - .k8s/*.yaml
   only:
     refs:
       - master
@@ -58,6 +63,11 @@ production:
     - kubectl config set-context default --cluster=.k8s --user=admin
     - kubectl config use-context default
     - .k8s/k8s.sh -n $CI_PROJECT_NAMESPACE-production
+  artifacts:
+    when: on_failure
+    name: "$CI_JOB_NAME"
+    paths:
+      - .k8s/*.yaml
   only:
     refs:
       - master
