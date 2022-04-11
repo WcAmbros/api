@@ -49,7 +49,6 @@ deploy:
   only:
     refs:
       - master
-
 production:
   when: manual
   image: gcr.io/cloud-builders/kubectl:latest
