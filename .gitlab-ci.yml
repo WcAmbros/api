@@ -4,6 +4,7 @@ stages:
   - production
 variables:
   CONTAINER_IMAGE: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  CONTAINER_IMAGE_LATEST: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
   CONTAINER_IMAGE_VERSION: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
 before_script:
   - apt update && apt install -y gettext-base jq
@@ -17,10 +18,10 @@ build:
   services:
     - docker:19.03.1-dind
   script:
-    - docker pull $CONTAINER_IMAGE:latest || true
+    - docker pull $CONTAINER_IMAGE_LATEST || true
     - docker build . -t $CONTAINER_IMAGE_VERSION --cache-from $CONTAINER_IMAGE_LATEST
-    - docker tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE:latest
-    - docker push $CONTAINER_IMAGE
+    - docker tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
+    - docker push $CONTAINER_IMAGE --all-tags
 
   only:
     refs:
