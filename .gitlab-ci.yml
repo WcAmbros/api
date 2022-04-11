@@ -20,7 +20,7 @@ build:
   script:
     - docker pull $CONTAINER_IMAGE_LATEST || true
     - docker build . -t $CONTAINER_IMAGE_VERSION --cache-from $CONTAINER_IMAGE_LATEST
-    - docker tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
+    - docker image tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
     - docker image push --all-tags $CONTAINER_IMAGE
   only:
     refs:
