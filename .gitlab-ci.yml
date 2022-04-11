@@ -21,8 +21,7 @@ build:
     - docker pull $CONTAINER_IMAGE_LATEST || true
     - docker build . -t $CONTAINER_IMAGE_VERSION --cache-from $CONTAINER_IMAGE_LATEST
     - docker tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
-    - docker push $CONTAINER_IMAGE --all-tags
-
+    - docker image push --all-tags $CONTAINER_IMAGE
   only:
     refs:
       - master
