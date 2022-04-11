@@ -3,7 +3,6 @@ stages:
   - deploy
   - production
 variables:
-  CONTAINER_IMAGE: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
   CONTAINER_IMAGE_LATEST: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
   CONTAINER_IMAGE_VERSION: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
 before_script:
@@ -22,7 +21,8 @@ build:
     - docker pull $CONTAINER_IMAGE_LATEST || true
     - docker build . -t $CONTAINER_IMAGE_VERSION --cache-from $CONTAINER_IMAGE_LATEST
     - docker image tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
-    - docker image push -a $CONTAINER_IMAGE
+    - docker image push $CONTAINER_IMAGE_LATEST
+    - docker image push $CONTAINER_IMAGE_VERSION
   only:
     refs:
       - master
