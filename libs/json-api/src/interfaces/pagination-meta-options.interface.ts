@@ -1,6 +1,6 @@
-import { PaginationOptionsDto } from "../dto";
+import { PaginationOptionsDto } from '../dto';
 
 export interface IPaginationMetaOptions {
-    options: PaginationOptionsDto;
-    itemCount: number;
+  options: PaginationOptionsDto;
+  itemCount: number;
 }

@@ -1,3 +1,3 @@
 export const UserEntity = {
-    NOT_FOUND: 'Пользователь не найден',
-}
+  NOT_FOUND: 'Пользователь не найден',
+};

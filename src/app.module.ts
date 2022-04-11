@@ -5,7 +5,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { UsersModule } from './users/users.module';
 
 import { join } from 'path';
-import {User} from "./users/entities/user.entity";
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [

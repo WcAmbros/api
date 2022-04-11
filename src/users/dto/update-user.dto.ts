@@ -1,11 +1,10 @@
-import {ApiProperty, PartialType} from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateUserDto } from './create-user.dto';
-import {IsBoolean} from "class-validator";
-import {UserExample} from  "../../i18n/ru";
+import { IsBoolean } from 'class-validator';
+import { UserExample } from '../../i18n/ru';
 
-export class UpdateUserDto extends PartialType(CreateUserDto){
-
-    @IsBoolean()
-    @ApiProperty(UserExample.IS_ACTIVE)
-    isActive: boolean;
+export class UpdateUserDto extends PartialType(CreateUserDto) {
+  @IsBoolean()
+  @ApiProperty(UserExample.IS_ACTIVE)
+  isActive: boolean;
 }

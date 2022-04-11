@@ -1,14 +1,21 @@
-import {Column, CreatedAt, Default, Model, Table, UpdatedAt} from 'sequelize-typescript';
-import {IUserCreationAttrs} from "../intrefaces/user.interface";
-import {ApiProperty} from "@nestjs/swagger";
-import {DataTypes} from "sequelize";
-import {UserExample} from "../../i18n/ru";
+import {
+  Column,
+  CreatedAt,
+  Default,
+  Model,
+  Table,
+  UpdatedAt,
+} from 'sequelize-typescript';
+import { IUserCreationAttrs } from '../intrefaces/user.interface';
+import { ApiProperty } from '@nestjs/swagger';
+import { DataTypes } from 'sequelize';
+import { UserExample } from '../../i18n/ru';
 
 @Table
-export class User extends Model<User, IUserCreationAttrs>{
+export class User extends Model<User, IUserCreationAttrs> {
   @ApiProperty(UserExample.ID)
-  @Column({autoIncrement: true, primaryKey: true})
-  id: number
+  @Column({ autoIncrement: true, primaryKey: true })
+  id: number;
 
   @ApiProperty(UserExample.LOGIN)
   @Column
