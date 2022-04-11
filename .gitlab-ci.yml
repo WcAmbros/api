@@ -19,7 +19,7 @@ build:
   script:
     - docker pull $CONTAINER_IMAGE_LATEST || true
     - docker build . -t $CONTAINER_IMAGE --cache-from $CONTAINER_IMAGE_LATEST
-    - docker push $CONTAINER_IMAGE_LATEST
+    - docker push $CONTAINER_IMAGE
   only:
     refs:
       - master
