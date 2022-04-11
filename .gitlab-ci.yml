@@ -18,10 +18,11 @@ build:
   services:
     - docker:19.03.1-dind
   script:
+    - docker push --help
     - docker pull $CONTAINER_IMAGE_LATEST || true
     - docker build . -t $CONTAINER_IMAGE_VERSION --cache-from $CONTAINER_IMAGE_LATEST
     - docker image tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
-    - docker image push --all-tags $CONTAINER_IMAGE
+    - docker image push -a $CONTAINER_IMAGE
   only:
     refs:
       - master
