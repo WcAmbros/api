@@ -44,7 +44,7 @@ spec:
       namespace: $PROJECT_NAMESPACE
       labels:
         app: $PROJECT_NAME
-        apiVersion: $PROJECT_VERSION
+        buildVersion: $PROJECT_VERSION
     spec:
       containers:
         - name: $PROJECT_NAME

@@ -2,6 +2,8 @@ stages:
   - build
   - deploy
   - production
+  - prepare
+  - release
 variables:
   CONTAINER_IMAGE_LATEST: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
   CONTAINER_IMAGE_VERSION: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
@@ -43,6 +45,7 @@ deploy:
     - .k8s/k8s.sh
   artifacts:
     when: on_failure
+    expire_in: 1 weeks
     name: "$CI_JOB_NAME"
     paths:
       - .k8s/*.yaml
@@ -68,9 +71,45 @@ production:
     - .k8s/k8s.sh -n $CI_PROJECT_NAMESPACE-production
   artifacts:
     when: on_failure
+    expire_in: 1 weeks
     name: "$CI_JOB_NAME"
     paths:
       - .k8s/*.yaml
   only:
     refs:
       - master
+      -
+prepare_job:
+  stage: prepare                                              # This stage must run before the release stage
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never                                             # Do not run this job when a tag is created manually
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH             # Run this job when commits are pushed or merged to the default branch
+  script:
+    - echo "EXTRA_DESCRIPTION=some message" >> variables.env  # Generate the EXTRA_DESCRIPTION and TAG environment variables
+    - echo "TAG=v$(cat VERSION)" >> variables.env             # and append to the variables.env file
+  artifacts:
+    reports:
+      dotenv: variables.env                                   # Use artifacts:reports:dotenv to expose the variables to other jobs
+
+release_job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: prepare_job
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never                                  # Do not run this job when a tag is created manually
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run this job when commits are pushed or merged to the default branch
+  script:
+    - echo "running release_job for $TAG"
+  release:
+    name: 'Release $TAG'
+    description: 'Created using the release-cli $EXTRA_DESCRIPTION'  # $EXTRA_DESCRIPTION and the $TAG
+    tag_name: '$TAG'                                                 # variables must be defined elsewhere
+    ref: '$CI_COMMIT_SHA'                                            # in the pipeline. For example, in the
+    milestones:                                                      # prepare_job
+      - 'm1'
+      - 'm2'
+      - 'm3'
