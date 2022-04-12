@@ -77,7 +77,7 @@ production:
   only:
     refs:
       - master
-prepare_job:
+release:
   stage: release
   when: manual
   only:
@@ -88,20 +88,19 @@ prepare_job:
     - echo "TAG=$VERSION" >> variables.env
   artifacts:
     reports:
-      dotenv: variables.env                                   # Use artifacts:reports:dotenv to expose the variables to other jobs
+      dotenv: variables.env  # Use artifacts:reports:dotenv to expose the variables to other jobs
 
-release_job:
+release_publish:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   needs:
-    - job: prepare_job
+    - job: release
       artifacts: true
-  when: manual
   only:
     refs:
       - master
   script:
-    - echo "running release_job for $TAG"
+    - echo "running release for $TAG"
   release:
     name: 'Release $TAG'
     description: '$EXTRA_DESCRIPTION'
