@@ -109,4 +109,4 @@ release_job:
     tag_name: '$TAG'                                                 # variables must be defined elsewhere
     ref: '$CI_COMMIT_SHA'                                            # in the pipeline. For example, in the
     milestones:                                                      # prepare_job
-      - '1'
+      - "1.0.0"
