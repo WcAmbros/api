@@ -110,5 +110,3 @@ release_job:
     ref: '$CI_COMMIT_SHA'                                            # in the pipeline. For example, in the
     milestones:                                                      # prepare_job
       - 'm1'
-      - 'm2'
-      - 'm3'
