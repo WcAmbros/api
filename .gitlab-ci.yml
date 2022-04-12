@@ -6,8 +6,7 @@ stages:
 variables:
   CONTAINER_IMAGE_LATEST: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
   CONTAINER_IMAGE_VERSION: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:gitlab-$CI_COMMIT_SHORT_SHA
-  PROJECT_VERSION: $(cat package.json | jq -r '.version')
-  TAG: v$(cat package.json | jq -r '.version')
+  PROJECT_VERSION: $(cat $DIR/../package.json | jq -r '.version')
 before_script:
   - apt update && apt install -y gettext-base jq
 build:
@@ -82,7 +81,22 @@ production:
 release:
   stage: release
   when: manual
+  only:
+    refs:
+      - master
+  script:
+    - echo "EXTRA_DESCRIPTION=release project $CI_PROJECT_NAME" >> variables.env
+    - echo "TAG=v$(cat package.json | jq -r '.version')" >> variables.env
+  artifacts:
+    reports:
+      dotenv: variables.env  # Use artifacts:reports:dotenv to expose the variables to other jobs
+
+release_publish:
+  stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: release
+      artifacts: true
   only:
     refs:
       - master
