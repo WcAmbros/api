@@ -23,9 +23,8 @@ build:
     - docker image tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
     - docker image push $CONTAINER_IMAGE_LATEST
     - docker image push $CONTAINER_IMAGE_VERSION
-  only:
-    refs:
-      - $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 deploy:
   image: gcr.io/cloud-builders/kubectl:latest
   stage: deploy
@@ -48,9 +47,8 @@ deploy:
     name: "$CI_JOB_NAME"
     paths:
       - .k8s/*.yaml
-  only:
-    refs:
-      - $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 production:
   when: manual
   image: gcr.io/cloud-builders/kubectl:latest
@@ -74,15 +72,13 @@ production:
     name: "$CI_JOB_NAME"
     paths:
       - .k8s/*.yaml
-  only:
-    refs:
-      - $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 prepare_job:
   stage: release
   when: manual
-  only:
-    refs:
-      - $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - echo "EXTRA_DESCRIPTION=release project $CI_PROJECT_NAME" >> variables.env
     - echo "TAG=$VERSION" >> variables.env
@@ -97,9 +93,8 @@ release_job:
     - job: prepare_job
       artifacts: true
   when: manual
-  only:
-    refs:
-      - $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - echo "running release_job for $TAG"
   release:
