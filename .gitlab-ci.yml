@@ -2,7 +2,6 @@ stages:
   - build
   - deploy
   - production
-  - prepare
   - release
 variables:
   CONTAINER_IMAGE_LATEST: $CONTAINER_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
@@ -26,7 +25,7 @@ build:
     - docker image push $CONTAINER_IMAGE_VERSION
   only:
     refs:
-      - master
+      - $CI_DEFAULT_BRANCH
 deploy:
   image: gcr.io/cloud-builders/kubectl:latest
   stage: deploy
@@ -51,7 +50,7 @@ deploy:
       - .k8s/*.yaml
   only:
     refs:
-      - master
+      - $CI_DEFAULT_BRANCH
 production:
   when: manual
   image: gcr.io/cloud-builders/kubectl:latest
@@ -77,16 +76,16 @@ production:
       - .k8s/*.yaml
   only:
     refs:
-      - master
+      - $CI_DEFAULT_BRANCH
 prepare_job:
-  stage: prepare                                              # This stage must run before the release stage
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never                                             # Do not run this job when a tag is created manually
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH             # Run this job when commits are pushed or merged to the default branch
+  stage: release
+  when: manual
+  only:
+    refs:
+      - $CI_DEFAULT_BRANCH
   script:
-    - echo "EXTRA_DESCRIPTION=some message" >> variables.env  # Generate the EXTRA_DESCRIPTION and TAG environment variables
-    - echo "TAG=v$(cat package.json | jq '.version')" >> variables.env             # and append to the variables.env file
+    - echo "EXTRA_DESCRIPTION=release project $CI_PROJECT_NAME" >> variables.env
+    - echo "TAG=$VERSION" >> variables.env
   artifacts:
     reports:
       dotenv: variables.env                                   # Use artifacts:reports:dotenv to expose the variables to other jobs
@@ -97,16 +96,16 @@ release_job:
   needs:
     - job: prepare_job
       artifacts: true
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never                                  # Do not run this job when a tag is created manually
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Run this job when commits are pushed or merged to the default branch
+  when: manual
+  only:
+    refs:
+      - $CI_DEFAULT_BRANCH
   script:
     - echo "running release_job for $TAG"
   release:
     name: 'Release $TAG'
-    description: 'Created using the release-cli $EXTRA_DESCRIPTION'  # $EXTRA_DESCRIPTION and the $TAG
-    tag_name: '$TAG'                                                 # variables must be defined elsewhere
-    ref: '$CI_COMMIT_SHA'                                            # in the pipeline. For example, in the
-    milestones:                                                      # prepare_job
-      - "1.0.0"
+    description: '$EXTRA_DESCRIPTION'
+    tag_name: '$TAG'
+    ref: '$CI_COMMIT_SHA'
+    milestones:
+      - '$TAG'
