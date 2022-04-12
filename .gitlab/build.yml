@@ -1,0 +1,18 @@
+build:
+  stage: build
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://localhost:2375/
+  image: cr.yandex/yc/metadata-token-docker-helper:0.2
+  services:
+    - docker:19.03.1-dind
+  script:
+    - docker pull $CONTAINER_IMAGE_LATEST || true
+    - docker build . -t $CONTAINER_IMAGE_VERSION --cache-from $CONTAINER_IMAGE_LATEST
+    - docker image tag $CONTAINER_IMAGE_VERSION $CONTAINER_IMAGE_LATEST
+    - docker image push $CONTAINER_IMAGE_LATEST
+    - docker image push $CONTAINER_IMAGE_VERSION
+  only:
+    refs:
+      - master

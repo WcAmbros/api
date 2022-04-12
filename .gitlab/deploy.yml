@@ -1,0 +1,25 @@
+deploy:
+  image: gcr.io/cloud-builders/kubectl:latest
+  stage: deploy
+  needs:
+    - build
+  environment:
+    name: deploy
+    url: https://pet.dev.findinamika.com/$CI_PROJECT_NAME/api-docs/
+    kubernetes:
+      namespace: $CI_PROJECT_NAMESPACE
+  script:
+    - kubectl config set-cluster .k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=.k8s --user=admin
+    - kubectl config use-context default
+    - .k8s/k8s.sh
+  artifacts:
+    when: on_failure
+    expire_in: 1 weeks
+    name: $CI_JOB_NAME
+    paths:
+      - .k8s/*.yaml
+  only:
+    refs:
+      - master

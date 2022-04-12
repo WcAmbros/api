@@ -1,0 +1,31 @@
+release:
+  stage: release
+  when: manual
+  only:
+    refs:
+      - master
+  script:
+    - echo "EXTRA_DESCRIPTION=release project $CI_PROJECT_NAME" >> variables.env
+    - echo "TAG=v$(cat package.json | jq -r '.version')" >> variables.env
+  artifacts:
+    reports:
+      dotenv: variables.env  # Use artifacts:reports:dotenv to expose the variables to other jobs
+
+release_publish:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: release
+      artifacts: true
+  only:
+    refs:
+      - master
+  script:
+    - echo "running release for $TAG"
+  release:
+    name: 'Release $TAG'
+    description: '$EXTRA_DESCRIPTION'
+    tag_name: '$TAG'
+    ref: '$CI_COMMIT_SHA'
+    milestones:
+      - '$TAG'
