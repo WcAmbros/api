@@ -78,7 +78,6 @@ production:
   only:
     refs:
       - master
-      -
 prepare_job:
   stage: prepare                                              # This stage must run before the release stage
   rules:
