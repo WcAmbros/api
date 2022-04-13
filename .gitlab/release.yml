@@ -12,7 +12,9 @@ release:
     - echo "Release $CI_PROJECT_NAME $CI_COMMIT_TAG"
   release:
     name: 'Release $CI_COMMIT_TAG'
-    description: 'Release $CI_PROJECT_NAME $CI_COMMIT_TAG'
+    description: |
+      Release $CI_PROJECT_NAME $CI_COMMIT_TAG
+      publish docker image: $CONTAINER_IMAGE:$CI_COMMIT_TAG
     tag_name: '$CI_COMMIT_TAG'
     ref: '$CI_COMMIT_SHA'
 #    milestones:
