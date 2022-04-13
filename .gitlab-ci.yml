@@ -9,4 +9,4 @@ variables:
 before_script:
   - apt update && apt install -y gettext-base jq
 
-include: '.gitlab/release.yml'
+include: '.gitlab/*.yml'
