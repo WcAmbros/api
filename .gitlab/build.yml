@@ -10,7 +10,6 @@ build:
   script:
     - docker pull $DOCKER_IMAGE_LATEST || true
     - docker build . -t $DOCKER_IMAGE_VERSION --cache-from $DOCKER_IMAGE_LATEST
-    - docker image tag $DOCKER_IMAGE_VERSION $DOCKER_IMAGE_LATEST
     - docker image push $DOCKER_IMAGE_VERSION
   only:
     refs:
