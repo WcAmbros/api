@@ -5,7 +5,7 @@ release:
     refs:
       - tags
   script:
-   - echo env
+   - env
 #    - echo "TAG=v$(cat package.json | jq -r '.version')" >> variables.env
 #    - echo "EXTRA_DESCRIPTION=release project $CI_PROJECT_NAME $TAG" >> variables.env
   artifacts:
