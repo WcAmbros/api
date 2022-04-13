@@ -2,10 +2,8 @@ release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   rules:
+    - if:\ $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  only:
-    refs:
-      - tags
   script:
     - env
     - echo "Release $CI_PROJECT_NAME $CI_COMMIT_TAG"
