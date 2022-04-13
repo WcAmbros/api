@@ -14,3 +14,21 @@ release:
     ref: '$CI_COMMIT_SHA'
 #    milestones:
 #      - '$TAG'
+release_docker_push:
+  stage: release
+  needs:
+    - job: release
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://localhost:2375/
+  image: cr.yandex/yc/metadata-token-docker-helper:0.2
+  services:
+    - docker:19.03.1-dind
+  script:
+    - docker pull $CONTAINER_IMAGE_LATEST || true
+    - docker image tag $CONTAINER_IMAGE_LATEST $CONTAINER_IMAGE:$CI_COMMIT_TAG
+    - docker image push $CONTAINER_IMAGE:$CI_COMMIT_TAG
+  only:
+    refs:
+      - tags
